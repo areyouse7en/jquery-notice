@@ -1,0 +1,174 @@
+/* colors */
+
+$default:#666;
+$info:#39f;
+$success:#0c6;
+$warning:#f90;
+$error:#f30;
+$text:#464c5b;
+$shadow: rgba(0, 0, 0, .3);
+
+/* wrapper */
+
+.fs-notice-wrapper {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    width: 335px;
+    z-index: 7777;
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0 1px 6px $shadow;
+    background: #fff;
+    line-height: 1;
+    overflow: hidden;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    &:after {
+        content: "";
+        display: block;
+        width: 4px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        background: $default;
+    }
+    .fs-notice-header {
+        position: relative;
+        margin-bottom: 8px;
+        color: $text;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    .fs-notice-title {
+        padding-right: 50%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .fs-notice-title span {
+        cursor: pointer;
+    }
+    .fs-notice-actions {
+        position: absolute;
+        right: 0;
+        top: 0;
+        text-align: right;
+    }
+    .fs-notice-actions i {
+        cursor: pointer;
+        margin-left: 3px;
+    }
+    .fs-notice-body {
+        font-size: 12px;
+        line-height: 1.5;
+        text-align: justify;
+        color: lighten($text, 0.3);
+        padding: 5px;
+        background: #f9f9f9;
+    }
+    .fs-notice-footer {
+        text-align: right;
+        color: $text;
+        font-size: 12px;
+        line-height: 1;
+        margin-top: 8px;
+    }
+    .fs-notice-footer i {
+        cursor: pointer;
+        font-size: 12px;
+    }
+}
+
+
+/* themes */
+
+@each $theme,
+$color in (default:$default, info:$info, success:$success, warning:$warning, error:$error) {
+    .fs-notice-#{$theme}:after {
+        background: $color;
+    }
+}
+
+
+/* others */
+
+.fs-cf:before,
+.fs-cf:after {
+    content: " ";
+    display: table;
+}
+
+.fs-cf:after {
+    clear: both;
+}
+
+.fs-fl {
+    float: left;
+}
+
+.fs-fr {
+    float: right;
+}
+
+.fs-hidden {
+    display: none;
+}
+
+.fs-noselect {
+    user-select: none;
+}
+
+
+/* animations */
+
+@-webkit-keyframes slideInRight {
+    from {
+        transform: translate3d(100%, 0, 0);
+        visibility: visible;
+    }
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translate3d(100%, 0, 0);
+        visibility: visible;
+    }
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.slideInRight {
+    animation-name: slideInRight;
+    animation-duration: 0.5s;
+}
+
+@-webkit-keyframes slideOutRight {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        visibility: hidden;
+        transform: translate3d(105%, 0, 0);
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        visibility: hidden;
+        transform: translate3d(105%, 0, 0);
+    }
+}
+
+.slideOutRight {
+    animation-name: slideOutRight;
+    animation-duration: 0.5s;
+}

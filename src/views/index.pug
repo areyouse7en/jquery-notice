@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+html(lang="en")
+head
+	meta(charset="UTF-8")
+	meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+	title jquery notice
+	link(rel="stylesheet", href="font/iconfont.css")
+	link(rel="stylesheet", href="css/notice.css")
+	link(rel="stylesheet", href="https://cdn.bootcss.com/highlight.js/9.11.0/styles/monokai-sublime.min.css")
+	link(rel="stylesheet", href="demo.css")
+body
+	.demo
+		h1 jQuery Notice
+		hr
+		h2 参数及事件说明
+		table
+			thead
+				tr
+					th 事件
+					th 描述
+					th 参数
+			tbody
+				tr
+					td $.notice(data,callback)
+					td 显示弹窗
+					td
+						|data为json或json数组，必须有title和desc属性
+						br
+						|callback为json，接收read、later、readAll三种方法
+						br
+						|later(稍后处理)和readAll(全部已读)不传则不显示该按钮
+						br
+						|callback均提供data(当前数据对象)、dataList(总数组)、index(当前数据索引)
+				tr
+					td $.notice.close()
+					td 关闭弹窗
+					td 无
+				tr
+					td $.notice.refresh(data)
+					td 刷新弹窗中的数据
+					td data同初始传参
+				tr
+					td $.notice.add(data)
+					td 新增一条数据到当前弹窗
+					td data为json对象
+				tr
+					td
+						|$.notice.info(data,callback)
+						br
+						|$.notice.success(data,callback)
+						br
+						|$.notice.warning(data,callback)
+						br
+						|$.notice.error(data,callback)
+					td 不同主题弹窗
+					td 参数同初始传参
+		h2 用法示例
+		h3 单条通知
+			a.btn#btn-single show single
+		pre
+			code.javascript
+				|// 数据
+				|var noticeData = {
+				|	title: '开会啦',
+				|	desc: '去会议室开会啦'
+				|}
+				|//回调
+				|var cbSingle = {
+				|	read: function(data) {
+				|		alert('已读了：' + data.title)
+				|		$.notice.close()
+				|	},
+				|	later: function(data) {
+				|		alert('稍后处理：' + data.title)
+				|		$.notice.close()
+				|	}
+				|}
+				|//触发事件
+				|$('#btn-single').click(function(e) {
+				|	$.notice(noticeData, cbSingle)
+				|})
+		h3 多条通知
+			a.btn#btn-multiple show multiple
+		pre
+			code.javascript
+				|// 数据
+				|var noticeList = [{
+				|	title: '开会啦',
+				|	desc: '去会议室开会啦'
+				|}, {
+				|	title: '又开会啦',
+				|	desc: '又去会议室开会啦'
+				|}, {
+				|	title: '下班啦',
+				|	desc: '赶紧回家买菜去啦'
+				|}]
+				|//回调
+				|var cbMultiple = {
+				|	read: function(data, dataList, index) {
+				|		alert('已读了：' + data.title)
+				|		noticeList.splice(index, 1)
+				|		$.notice.refresh(noticeList)
+				|	},
+				|	later: function(data, dataList, index) {
+				|		alert('稍后处理：' + data.title)
+				|	},
+				|	readAll: function(data, dataList, index) {
+				|		alert('全部已读，共' + dataList.length + '条')
+				|		$.notice.close()
+				|	}
+				|}
+				|//触发事件
+				|$('#btn-multiple').click(function(e) {
+				|	$.notice(noticeList, cbMultiple)
+				|})
+		h3 动态添加
+			a.btn#btn-add add
+		pre
+			code.javascript
+				|$('#btn-add').click(function(e) {
+				|    var newNotice = {
+				|        title: '加班啦',
+				|        desc: '今天要加班啦'
+				|    }
+				|    $.notice.add(newNotice)
+				|})
+		h3 多种主题
+			a.btn.btn-info#btn-info info
+			a.btn.btn-success#btn-success success
+			a.btn.btn-warning#btn-warning warning
+			a.btn.btn-error#btn-error error
+		pre
+			code.javascript
+				|$('#btn-info').click(function(e) {
+				|    $.notice.info(noticeList, cbMultiple)
+				|})
+				|$('#btn-success').click(function(e) {
+				|    $.notice.success(noticeList, cbMultiple)
+				|})
+				|$('#btn-warning').click(function(e) {
+				|    $.notice.warning(noticeList, cbMultiple)
+				|})
+				|$('#btn-error').click(function(e) {
+				|    $.notice.error(noticeList, cbMultiple)
+				|})
+	script(src="jquery.js")
+	script(src="js/notice.js")
+	script(src="https://cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js")
+	script(src="demo.js")

@@ -1,6 +1,6 @@
 (function($) {
     // 默认配置
-    var opt = {
+    let opt = {
             id: '',
             // 弹窗样式
             type: 'default',

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>jquery notice</title>
+    <link rel="stylesheet" href="font/iconfont.css"/>
+    <link rel="stylesheet" href="css/notice.css"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.11.0/styles/monokai-sublime.min.css"/>
+    <link rel="stylesheet" href="demo.css"/>
+</head>
+<body>
+    <div class="demo">
+        <h1>jQuery Notice</h1>
+        <hr/>
+        <h2>参数及事件说明</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>事件</th>
+                    <th>描述</th>
+                    <th>参数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>$.notice(data,callback)</td>
+                    <td>显示弹窗</td>
+                    <td>data为json或json数组，必须有title和desc属性<br/>callback为json，接收read、later、readAll三种方法<br/>later(稍后处理)和readAll(全部已读)不传则不显示该按钮<br/>callback均提供data(当前数据对象)、dataList(总数组)、index(当前数据索引)</td>
+                </tr>
+                <tr>
+                    <td>$.notice.close()</td>
+                    <td>关闭弹窗</td>
+                    <td>无</td>
+                </tr>
+                <tr>
+                    <td>$.notice.refresh(data)</td>
+                    <td>刷新弹窗中的数据</td>
+                    <td>data同初始传参</td>
+                </tr>
+                <tr>
+                    <td>$.notice.add(data)</td>
+                    <td>新增一条数据到当前弹窗</td>
+                    <td>data为json对象</td>
+                </tr>
+                <tr>
+                    <td>$.notice.info(data,callback)<br/>$.notice.success(data,callback)<br/>$.notice.warning(data,callback)<br/>$.notice.error(data,callback)</td>
+                    <td>不同主题弹窗</td>
+                    <td>参数同初始传参</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>用法示例</h2>
+        <h3>单条通知<a class="btn" id="btn-single">show single</a></h3>
+        <pre><code class="javascript">// 数据
+var noticeData = {
+	title: '开会啦',
+	desc: '去会议室开会啦'
+}
+//回调
+var cbSingle = {
+	read: function(data) {
+		alert('已读了：' + data.title)
+		$.notice.close()
+	},
+	later: function(data) {
+		alert('稍后处理：' + data.title)
+		$.notice.close()
+	}
+}
+//触发事件
+$('#btn-single').click(function(e) {
+	$.notice(noticeData, cbSingle)
+})</code></pre>
+        <h3>多条通知<a class="btn" id="btn-multiple">show multiple</a></h3>
+        <pre><code class="javascript">// 数据
+var noticeList = [{
+	title: '开会啦',
+	desc: '去会议室开会啦'
+}, {
+	title: '又开会啦',
+	desc: '又去会议室开会啦'
+}, {
+	title: '下班啦',
+	desc: '赶紧回家买菜去啦'
+}]
+//回调
+var cbMultiple = {
+	read: function(data, dataList, index) {
+		alert('已读了：' + data.title)
+		noticeList.splice(index, 1)
+		$.notice.refresh(noticeList)
+	},
+	later: function(data, dataList, index) {
+		alert('稍后处理：' + data.title)
+	},
+	readAll: function(data, dataList, index) {
+		alert('全部已读，共' + dataList.length + '条')
+		$.notice.close()
+	}
+}
+//触发事件
+$('#btn-multiple').click(function(e) {
+	$.notice(noticeList, cbMultiple)
+})</code></pre>
+        <h3>动态添加<a class="btn" id="btn-add">add</a></h3>
+        <pre><code class="javascript">$('#btn-add').click(function(e) {
+   var newNotice = {
+       title: '加班啦',
+       desc: '今天要加班啦'
+   }
+   $.notice.add(newNotice)
+})</code></pre>
+        <h3>多种主题<a class="btn btn-info" id="btn-info">info</a><a class="btn btn-success" id="btn-success">success</a><a class="btn btn-warning" id="btn-warning">warning</a><a class="btn btn-error" id="btn-error">error</a></h3>
+        <pre><code class="javascript">$('#btn-info').click(function(e) {
+   $.notice.info(noticeList, cbMultiple)
+})
+$('#btn-success').click(function(e) {
+   $.notice.success(noticeList, cbMultiple)
+})
+$('#btn-warning').click(function(e) {
+   $.notice.warning(noticeList, cbMultiple)
+})
+$('#btn-error').click(function(e) {
+   $.notice.error(noticeList, cbMultiple)
+})</code></pre>
+    </div>
+    <script src="jquery.js"></script>
+    <script src="js/notice.js"></script>
+    <script src="https://cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+    <script src="demo.js"></script>
+</body>
